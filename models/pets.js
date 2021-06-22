@@ -1,24 +1,22 @@
-const conexao = require('../infraestrutura/conexao.js');
-const uploadDeArquivo = require('../arquivos/uploadArquivos.js');
+const uploadDeArquivo = require('../infraestrutura/arquivos/uploadArquivos.js');
+const repositorio = require('../repositorios/pets.js');
 
 class Pet{
 
-    adiciona(pet, response){
-        const sql = 'INSERT INTO Pets SET ?';
-
+    adiciona(pet){
+        
+        // TODO: Verificar erro em retorno de Promisse
         uploadDeArquivo(pet.imagem, pet.nome, (erro, caminhoImagemSalva) => {
             if(erro)
-                return response.status(400).json({erro});
+                return new Promise((_, reject) => reject(erro));
 
             const novoPet = {nome: pet.nome, imagem: caminhoImagemSalva};
-
-            conexao.query(sql, novoPet, erro => {
-                if(erro)
-                    return response.status(400).json(erro);
-                
-                response.status(200).json(novoPet);
-            });    
-        });
+            return repositorio.adiciona(novoPet)
+                    .then(resultado => {
+                        const id = resultado.insertId;
+                        return resultado;
+                    })
+        })
         
     }
 
