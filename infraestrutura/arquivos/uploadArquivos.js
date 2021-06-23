@@ -13,7 +13,10 @@ module.exports = (caminho, nomeDoArquivo, callbackImagemCriada) => {
     
     const caminhoImagemSalva = `./assets/imagens/${nomeDoArquivo}${extensaoArquivo}`;
 
-    fs.createReadStream(caminho)
-    .pipe(fs.createWriteStream(caminhoImagemSalva))
-    .on('finish', () => callbackImagemCriada(false, caminhoImagemSalva));
+    const arquivo = fs.createReadStream(caminho).pipe(fs.createWriteStream(caminhoImagemSalva))
+    return new Promise((resolve, _) => {
+        arquivo.on('finish', () => {
+            return resolve(callbackImagemCriada(false, caminhoImagemSalva));
+        });
+    })
 }

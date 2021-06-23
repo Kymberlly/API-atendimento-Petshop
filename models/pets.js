@@ -5,8 +5,7 @@ class Pet{
 
     adiciona(pet){
         
-        // TODO: Verificar erro em retorno de Promisse
-        uploadDeArquivo(pet.imagem, pet.nome, (erro, caminhoImagemSalva) => {
+        return uploadDeArquivo(pet.imagem, pet.nome, (erro, caminhoImagemSalva) => {
             if(erro)
                 return new Promise((_, reject) => reject(erro));
 
@@ -14,8 +13,9 @@ class Pet{
             return repositorio.adiciona(novoPet)
                     .then(resultado => {
                         const id = resultado.insertId;
-                        return resultado;
-                    })
+                        return {...novoPet, id};
+                    });
+            
         })
         
     }
