@@ -1,2 +1,2 @@
-# projeto-nodejs-rest
-Construção de uma API REST em Node.js
+# API Atendimento Petshop
+API em Node.js para realizar cadastro de atendimentos em um Petshop.
